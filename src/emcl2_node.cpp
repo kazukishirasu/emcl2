@@ -34,6 +34,7 @@ void EMcl2Node::initCommunication(void)
 	alpha_pub_ = nh_.advertise<std_msgs::Float32>("alpha", 2, true);
 	laser_scan_sub_ = nh_.subscribe("scan", 2, &EMcl2Node::cbScan, this);
 	initial_pose_sub_ = nh_.subscribe("initialpose", 2, &EMcl2Node::initialPoseReceived, this);
+	map_sub_ = nh_.subscribe("map", 1, &EMcl2Node::mapReceived, this);
 
 	global_loc_srv_ = nh_.advertiseService("global_localization", &EMcl2Node::cbSimpleReset, this);
 
@@ -41,6 +42,7 @@ void EMcl2Node::initCommunication(void)
 	private_nh_.param("footprint_frame_id", footprint_frame_id_, std::string("base_footprint"));
 	private_nh_.param("odom_frame_id", odom_frame_id_, std::string("odom"));
 	private_nh_.param("base_frame_id", base_frame_id_, std::string("base_link"));
+	private_nh_.param("use_map_topic", use_map_topic_, false);
 
 	tfb_.reset(new tf2_ros::TransformBroadcaster());
 	tf_.reset(new tf2_ros::Buffer());
@@ -124,6 +126,15 @@ void EMcl2Node::initialPoseReceived(const geometry_msgs::PoseWithCovarianceStamp
 	init_x_ = msg->pose.pose.position.x;
 	init_y_ = msg->pose.pose.position.y;
 	init_t_ = tf2::getYaw(msg->pose.pose.orientation);
+}
+
+void EMcl2Node::mapReceived(const nav_msgs::OccupancyGridConstPtr& msg)
+{
+	if (use_map_topic_)
+	{
+		ROS_INFO("Received new map");
+		initPF();
+	}
 }
 
 void EMcl2Node::loop(void)

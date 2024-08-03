@@ -36,6 +36,7 @@ private:
 	ros::Publisher alpha_pub_;
 	ros::Subscriber laser_scan_sub_;
 	ros::Subscriber initial_pose_sub_;
+	ros::Subscriber map_sub_;
 
 	ros::ServiceServer global_loc_srv_;
 
@@ -56,6 +57,7 @@ private:
 	int odom_freq_;
 	bool init_request_;
 	bool simple_reset_request_;
+	bool use_map_topic_;
 	double init_x_, init_y_, init_t_;
 
 	void publishPose(double x, double y, double t,
@@ -66,6 +68,7 @@ private:
 	void sendTf(void);
 	bool getOdomPose(double& x, double& y, double& yaw);
 	bool getLidarPose(double& x, double& y, double& yaw, bool& inv);
+	void mapReceived(const nav_msgs::OccupancyGridConstPtr& msg);
 
 	void initCommunication(void);
 	void initPF(void);
