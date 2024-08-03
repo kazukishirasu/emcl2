@@ -8,9 +8,7 @@
       "includePath": [
         "/home/kazuki/tsukuba_ws/devel/include/**",
         "/home/kazuki/tokuron_ws/devel/include/**",
-        "/home/kazuki/catkin_ws/devel/include/**",
         "/opt/ros/noetic/include/**",
-        "/home/kazuki/catkin_ws/src/emcl_with_landmark/include/**",
         "/home/kazuki/tsukuba_ws/src/emcl2/include/**",
         "/home/kazuki/tsukuba_ws/src/map_changer/include/**",
         "/home/kazuki/catkin_ws/src/obstacle_detector/include/**",
